@@ -12,23 +12,24 @@
     /* ---------- Page ---------- */
     html,body { height: 100%; }
     body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at 20% 80%, rgba(139,0,0,0.12) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255,0,0,0.07) 0%, transparent 50%),
-        linear-gradient(135deg,#0a0a0a 0%,#1a0a0a 100%);
-      padding: 20px;
-      padding-top: 100px; /* allow a little extra scroll space at top */
-      padding-bottom: 100px; /* allow a little extra scroll space */
-      color: #fff;
-      font-family: 'Rajdhani', sans-serif;
-      overflow-x: hidden;
-      overflow-y: auto;
-      position: relative;
-    }
+  display: flex;
+  justify-content: center;
+  /* align-items: center;   ❌ remove this */
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 20% 80%, rgba(139,0,0,0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255,0,0,0.07) 0%, transparent 50%),
+    linear-gradient(135deg,#0a0a0a 0%,#1a0a0a 100%);
+  padding: 20px;
+  padding-top: 100px; /* extra scroll space at top */
+  padding-bottom: 100px; /* extra space at bottom */
+  color: #fff;
+  font-family: 'Rajdhani', sans-serif;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+}
+
 
     /* ---------- Floating background image (optional) ---------- */
     body::before{
