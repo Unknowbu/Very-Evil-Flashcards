@@ -192,22 +192,21 @@
       cursor: pointer;
       transition: 0.2s;
       font-family:'Cinzel Decorative',serif;
+      display: none; /* hidden on desktop */
     }
     .settings-btn:hover { background: #666; }
 
     /* Collapsible controls (repurpose data-controls) */
     .data-controls {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease, opacity 0.3s ease;
-      opacity: 0;
       display:flex;
       flex-direction:column;
       align-items:center;
       gap:10px;
       min-width: 220px;
+      opacity: 1;
+      max-height: none;
     }
-    .data-controls.active { max-height: 220px; opacity: 1; }
+    .data-controls.active { opacity: 1; max-height: none; }
     .data-controls .data-row { display:flex; gap:8px; justify-content:center; align-items:center; }
     .data-controls .data-row { display:flex; gap:8px; justify-content:center; align-items:center; }
     .data-controls button {
@@ -315,6 +314,61 @@
       60% { opacity: 0.6; }
       80% { opacity: 0.1; }
       100% { opacity: 0; }
+    }
+
+    /* --- Mobile Layout --- */
+    @media (max-width: 600px) {
+      /* Show Settings button on mobile */
+      .settings-btn {
+        display: block;
+      }
+      /* Hide controls by default on mobile; reveal via .active */
+      .data-controls {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease, opacity 0.3s ease;
+        opacity: 0;
+      }
+      .data-controls.active {
+        max-height: 240px;
+        opacity: 1;
+      }
+
+      /* Flashcard scaling */
+      .flashcard {
+        width: 95%;
+        margin: auto;
+      }
+      .header h1 { font-size: clamp(20px, 6vw, 28px); }
+      .word { font-size: clamp(18px, 6vw, 24px); }
+      .example { font-size: clamp(12px, 4.2vw, 16px); }
+
+      /* Navigation buttons resize & wrap */
+      .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+      }
+      .buttons button {
+        flex: 1 1 45%;
+        font-size: clamp(12px, 4vw, 14px);
+        padding: 8px;
+      }
+
+      /* Category buttons wrap & resize */
+      .category-filter {
+        display:flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+        margin: 10px 0;
+      }
+      .category-filter .category-btn {
+        flex: 1 1 45%;
+        font-size: clamp(12px, 4vw, 14px);
+        padding: 8px;
+      }
     }
     .floating-img {
       position: fixed;
