@@ -41,7 +41,8 @@
       text-align: center;
       background: rgba(10,0,0,0.86);
       border-radius: 14px;
-      padding: 26px;
+      padding: 26px 26px 40px;
+      min-height: 75vh;
       box-shadow: 0 8px 40px rgba(255,0,0,0.18);
       border: 1px solid rgba(255,0,0,0.12);
       z-index: 10;
@@ -69,8 +70,8 @@
     /* ---------- Flashcard ---------- */
     .flashcard {
       width:100%;
-      max-width:780px;
-      height:400px;
+      max-width:640px;
+      height:320px;
       margin: 10px auto;
       background:#110000;
       border-radius:12px;
@@ -408,13 +409,13 @@
 
     /* small responsive tweaks */
     @media (max-width: 768px) {
-      .flashcard { height: 320px; }
+      .flashcard { height: 300px; max-width: 92vw; }
       .word { font-size:1.6rem; }
       .floating-img img { width: 100px; }
     }
     @media (max-width: 480px) {
       .container { padding:16px; }
-      .flashcard { height: 280px; }
+      .flashcard { height: 260px; max-width: 95vw; }
       .floating-img img { width: 86px; }
     }
   </style>
