@@ -14,7 +14,7 @@
     body {
   display: flex;
   justify-content: center;
-  /* align-items: center;   ❌ remove this */
+  /* align-items: center; intentionally disabled to allow top scroll space */
   min-height: 100vh;
   background:
     radial-gradient(circle at 20% 80%, rgba(139,0,0,0.12) 0%, transparent 50%),
@@ -22,7 +22,7 @@
     linear-gradient(135deg,#0a0a0a 0%,#1a0a0a 100%);
   padding: 20px;
   padding-top: 100px; /* extra scroll space at top */
-  padding-bottom: 100px; /* extra space at bottom */
+  padding-bottom: 200px; /* extra space at bottom */
   color: #fff;
   font-family: 'Rajdhani', sans-serif;
   overflow-x: hidden;
@@ -32,19 +32,7 @@
 
 
     /* ---------- Floating background image (optional) ---------- */
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      background-image: url('db72c438-0e8a-4371-a2d4-819b32e2aaab.png'); /* optional */
-      background-repeat:no-repeat;
-      background-position: 90% 90%;
-      background-size: 60%;
-      opacity: .05;
-      z-index: 0;
-      pointer-events: none;
-      filter: grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-30deg) saturate(400%);
-    }
+    /* Removed broken background image reference */
 
     /* ---------- Container ---------- */
     .container {
@@ -141,6 +129,13 @@
     }
     .buttons button:hover { background:#8B0000; color:#fff; transform: translateY(-2px); }
 
+    /* language toggle */
+    #lang-toggle {
+      background:#2a0a0a; color:#ccc; border:1px solid #500; padding:8px 12px; border-radius:6px; cursor:pointer;
+      font-family:'Cinzel Decorative',serif; margin-top:6px;
+    }
+    #lang-toggle:hover { background:#8B0000; color:#fff; transform: translateY(-2px); }
+
     .progress { margin-top:12px; color:#ffb2b2; font-family:'Orbitron',sans-serif; }
 
     /* ---------- Add form ---------- */
@@ -175,7 +170,152 @@
     }
     .chaos-btn:hover { transform: scale(1.06); }
 
+    /* ---------- Data controls ---------- */
+    /* Settings container */
+    .settings-container {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      /* no centering transform; anchored to bottom-left */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 1000;
+    }
+    .settings-btn {
+      background: #444;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+      font-family:'Cinzel Decorative',serif;
+    }
+    .settings-btn:hover { background: #666; }
+
+    /* Collapsible controls (repurpose data-controls) */
+    .data-controls {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.3s ease;
+      opacity: 0;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+      min-width: 220px;
+    }
+    .data-controls.active { max-height: 220px; opacity: 1; }
+    .data-controls .data-row { display:flex; gap:8px; justify-content:center; align-items:center; }
+    .data-controls .data-row { display:flex; gap:8px; justify-content:center; align-items:center; }
+    .data-controls button {
+      padding: 6px 12px;
+      background: #2a0a0a;
+      color: #fff;
+      border: 1px solid #500;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      font-family:'Cinzel Decorative',serif;
+    }
+    .data-controls button:hover { background: #8B0000; }
+
+    /* Larger, centered destroy button above row */
+    #destroyBtn {
+      font-size: 1.08rem;
+      padding: 12px 20px;
+      border-width: 3px;
+      border-radius: 12px;
+      z-index: 76;
+    }
+
     /* ---------- Floating images (ghosts) ---------- */
+    
+    /* ---------- Evil destroy button + effects ---------- */
+    .evil-button {
+      background: linear-gradient(180deg,#5a0000 0%, #2a0000 100%);
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: 1px;
+      border: 2px solid #000;
+      padding: 8px 14px;
+      margin: 5px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+      text-shadow: 0 0 6px rgba(255,0,0,0.55);
+      box-shadow: 0 0 0 rgba(255,0,0,0), 0 0 12px rgba(139,0,0,0.35) inset;
+      position: relative;
+    }
+    .evil-button::before {
+      content: "☠";
+      margin-right: 8px;
+      filter: drop-shadow(0 0 4px rgba(255,0,0,0.45));
+    }
+    .evil-button:hover {
+      background: linear-gradient(180deg,#8B0000 0%, #2a0000 100%);
+      color: #ff3b3b;
+      transform: scale(1.08);
+      box-shadow: 0 0 18px rgba(255,0,0,0.45), 0 0 16px rgba(255,0,0,0.25) inset;
+    }
+    .evil-button:active {
+      transform: scale(0.98);
+      filter: brightness(1.1);
+    }
+    .evil-button:focus-visible {
+      outline: 2px solid #ff0000;
+      outline-offset: 2px;
+    }
+    .evil-button.pulsing {
+      animation: pulseGlow 1.6s ease-in-out infinite;
+      box-shadow: 0 0 24px rgba(255,0,0,0.25), 0 0 18px rgba(255,0,0,0.22) inset;
+    }
+    @keyframes pulseGlow {
+      0%   { transform: scale(1); box-shadow: 0 0 10px rgba(255,0,0,0.25), 0 0 8px rgba(255,0,0,0.18) inset; }
+      50%  { transform: scale(1.06); box-shadow: 0 0 26px rgba(255,0,0,0.55), 0 0 18px rgba(255,0,0,0.35) inset; }
+      100% { transform: scale(1); box-shadow: 0 0 10px rgba(255,0,0,0.25), 0 0 8px rgba(255,0,0,0.18) inset; }
+    }
+    @keyframes shake {
+      0% { transform: translate(2px, 2px); }
+      20% { transform: translate(-2px, -2px); }
+      40% { transform: translate(2px, -2px); }
+      60% { transform: translate(-2px, 2px); }
+      80% { transform: translate(2px, 2px); }
+      100% { transform: translate(0, 0); }
+    }
+    .shake { animation: shake 0.1s linear infinite; }
+    .lightning-flash {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: white;
+      opacity: 0.8;
+      z-index: 9999;
+      animation: flash 0.2s ease-in-out;
+      pointer-events: none;
+    }
+    @keyframes flash {
+      0% { opacity: 0; }
+      50% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    /* Thunder overlay */
+    #thunder-flash {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      background: white; opacity: 0; pointer-events: none; z-index: 9999;
+    }
+    #thunder-flash.active { animation: thunderFlash 0.4s ease-in-out; }
+    @keyframes thunderFlash {
+      0% { opacity: 0; }
+      20% { opacity: 0.8; }
+      40% { opacity: 0.2; }
+      60% { opacity: 0.6; }
+      80% { opacity: 0.1; }
+      100% { opacity: 0; }
+    }
     .floating-img {
       position: fixed;
       pointer-events: none;
@@ -215,6 +355,21 @@
   <!-- Floating chaos button -->
   <div class="chaos-btn" id="chaos-btn" title="Chaos Mode">⚡</div>
 
+  <!-- Settings + Controls (bottom-center) -->
+  <div class="settings-container">
+    <button id="settings-btn" class="settings-btn">⚙ Settings</button>
+    <div class="data-controls" aria-label="data controls">
+      <button id="destroyBtn" class="evil-button pulsing">DESTROY</button>
+      <div class="data-row">
+        <button id="exportBtn">Export</button>
+        <input type="file" id="importFile" accept="application/json" style="display:none;" />
+        <button id="importBtn">Import</button>
+      </div>
+      <audio id="thunderSound" src="https://www.myinstants.com/media/sounds/thunder-2.mp3"></audio>
+    </div>
+  </div>
+  <div id="thunder-flash"></div>
+
   <!-- Container (UI) -->
   <div class="container" role="main">
     <div class="header">
@@ -233,6 +388,10 @@
       <button class="category-btn" data-category="scheme">WELTHERRSCHAFT</button>
       <button class="category-btn" data-category="food">SNACK-VORRÄTE</button>
       <button class="category-btn" data-category="weapons">ZERSTÖRUNGSWERKZEUGE</button>
+    </div>
+
+    <div style="display:flex;justify-content:center;">
+      <button id="lang-toggle">LANGUAGE: ENGLISH</button>
     </div>
 
     <div class="flashcard" id="flashcard" aria-live="polite">
@@ -271,12 +430,20 @@
         <input id="new-english" type="text" placeholder="z.B. POWER" />
       </div>
       <div class="form-group">
+        <label for="new-vietnamese">VIETNAMESISCHES WORT (Tiếng Việt)</label>
+        <input id="new-vietnamese" type="text" placeholder="z.B. NGÀY" />
+      </div>
+      <div class="form-group">
         <label for="new-german-example">DEUTSCHER SATZ</label>
         <input id="new-german-example" type="text" placeholder="z.B. ICH WILL MEHR MACHT!" />
       </div>
       <div class="form-group">
         <label for="new-english-example">ENGLISCHER SATZ</label>
         <input id="new-english-example" type="text" placeholder="z.B. I WANT MORE POWER!" />
+      </div>
+      <div class="form-group">
+        <label for="new-vietnamese-example">VIETNAMESISCHER SATZ (Tiếng Việt)</label>
+        <input id="new-vietnamese-example" type="text" placeholder="z.B. MỘT NGÀY TỐT..." />
       </div>
       <div class="form-group">
         <label for="new-category">KATEGORIE</label>
@@ -309,14 +476,42 @@
       food: "SNACK SUPPLIES",
       weapons: "DESTRUCTION TOOLS"
     };
+    const vietnameseCategoryMap = {
+      everyday: "Hỗn loạn hàng ngày",
+      scheme: "Thống trị thế giới",
+      food: "Đồ ăn vặt",
+      weapons: "Công cụ hủy diệt"
+    };
+    // alias to match helper code naming
+    const categoryMapVi = vietnameseCategoryMap;
 
-    const flashcards = [
-      {de:"DER TAG", en:"DAY", deEx:"EIN GUTER TAG ZUM HARPOONIEREN!", enEx:"A GOOD DAY FOR HARPOONING!", cat:"everyday"},
-      {de:"DIE BANANE", en:"BANANA", deEx:"ICH ESSE DIE BANANE FÜR MACHT.", enEx:"I EAT THE BANANA FOR POWER.", cat:"food"},
-      {de:"DIE WELTHERRSCHAFT", en:"WORLD DOMINATION", deEx:"ICH STREBE NACH WELTHERRSCHAFT!", enEx:"I STRIVE FOR WORLD DOMINATION!", cat:"scheme"},
-      {de:"DIE HARPUNE", en:"HARPOON", deEx:"DIE HARPUNE IST MEIN LIEBSTES WERKZEUG!", enEx:"THE HARPOON IS MY FAVORITE TOOL!", cat:"weapons"},
-      {de:"DER COMPUTER", en:"COMPUTER", deEx:"MEIN COMPUTER, MEINE REGELN!", enEx:"MY COMPUTER, MY RULES!", cat:"scheme"}
+    // Default flashcards. We will load saved ones from localStorage if present.
+    const defaultFlashcards = [
+      {de:"DER TAG", en:"DAY", vi:"NGÀY", deEx:"EIN GUTER TAG ZUM HARPOONIEREN!", enEx:"A GOOD DAY FOR HARPOONING!", viEx:"MỘT NGÀY TỐT ĐỂ ĐÂM HARPOON!", cat:"everyday"},
+      {de:"DIE BANANE", en:"BANANA", vi:"CHUỐI", deEx:"ICH ESSE DIE BANANE FÜR MACHT.", enEx:"I EAT THE BANANA FOR POWER.", viEx:"TÔI ĂN CHUỐI ĐỂ CÓ SỨC MẠNH.", cat:"food"},
+      {de:"DIE WELTHERRSCHAFT", en:"WORLD DOMINATION", vi:"THỐNG TRỊ THẾ GIỚI", deEx:"ICH STREBE NACH WELTHERRSCHAFT!", enEx:"I STRIVE FOR WORLD DOMINATION!", viEx:"TÔI KHAO KHÁT THỐNG TRỊ THẾ GIỚI!", cat:"scheme"},
+      {de:"DIE HARPUNE", en:"HARPOON", vi:"LAO MÓC", deEx:"DIE HARPUNE IST MEIN LIEBSTES WERKZEUG!", enEx:"THE HARPOON IS MY FAVORITE TOOL!", viEx:"LAO MÓC LÀ CÔNG CỤ YÊU THÍCH CỦA TÔI!", cat:"weapons"},
+      {de:"DER COMPUTER", en:"COMPUTER", vi:"MÁY TÍNH", deEx:"MEIN COMPUTER, MEINE REGELN!", enEx:"MY COMPUTER, MY RULES!", viEx:"MÁY TÍNH CỦA TÔI, LUẬT CỦA TÔI!", cat:"scheme"}
     ];
+
+    // Storage helpers
+    const STORAGE_KEY = 'flashcards';
+    function loadFlashcards() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        return Array.isArray(saved) && saved.length ? saved : defaultFlashcards;
+      } catch (_) {
+        return defaultFlashcards;
+      }
+    }
+    function saveFlashcards(list) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+      } catch (_) {}
+    }
+
+    // Initialize flashcards
+    let flashcards = loadFlashcards();
 
     let currentIndex = 0;
     let currentCategory = 'all';
@@ -335,27 +530,53 @@
       return currentCategory === 'all' ? flashcards : flashcards.filter(c => c.cat === currentCategory);
     }
 
+    // ── helper to pick translation field with graceful fallback ──
+    function getTranslation(card, fieldBase) {
+      if (!card) return '';
+      const isExample = fieldBase.endsWith('Ex');
+      const suffix = isExample ? 'Ex' : '';
+      if (currentLang === 'vi') {
+        return card['vi' + suffix] || card['en' + suffix] || card['de' + suffix] || '';
+      } else {
+        return card['en' + suffix] || card['vi' + suffix] || card['de' + suffix] || '';
+      }
+    }
+
+    // ── replacement updateCard() that respects currentLang ──
     function updateCard() {
       const filtered = getFiltered();
       if (!filtered.length) {
-        germanWord.textContent = 'KEINE KARTEN';
-        englishWord.textContent = 'NO CARDS';
-        germanEx.textContent = 'EVIL NEURO HAT ALLE KARTEN VERSTECKT!';
-        englishEx.textContent = 'EVIL NEURO HID ALL THE CARDS!';
-        germanCat.textContent = '';
-        englishCat.textContent = '';
-        progress.textContent = '0/0';
+        germanWord.textContent  = 'KEINE KARTEN';
+        englishWord.textContent = currentLang === 'vi' ? 'KHÔNG CÓ THẺ' : 'NO CARDS';
+        germanEx.textContent    = 'EVIL NEURO HAT ALLE KARTEN VERSTECKT!';
+        englishEx.textContent   = currentLang === 'vi' ? 'EVIL NEURO ĐÃ GIẤU TẤT CẢ THẺ!' : 'EVIL NEURO HID ALL THE CARDS!';
+        germanCat.textContent   = '';
+        englishCat.textContent  = '';
+        progress.textContent    = '0/0';
         return;
       }
 
       if (currentIndex >= filtered.length) currentIndex = 0;
       const c = filtered[currentIndex];
-      germanWord.textContent = c.de;
-      englishWord.textContent = c.en;
-      germanEx.textContent = c.deEx || '';
-      englishEx.textContent = c.enEx || '';
-      germanCat.textContent = categoryMap[c.cat] || c.cat;
-      englishCat.textContent = englishCategoryMap[c.cat] || c.cat;
+
+      // Left side: always German (source)
+      germanWord.textContent = c.de || c.german || '';
+      germanEx.textContent   = c.deEx || c.germanEx || '';
+
+      // Right side: language-sensitive translation + example
+      if (currentLang === 'vi') {
+        englishWord.textContent = c.vi || c.vietnamese || c.en || '';
+        englishEx.textContent   = c.viEx || c.vietnameseEx || c.enEx || '';
+        englishCat.textContent  = categoryMapVi[c.cat] || englishCategoryMap[c.cat] || '';
+      } else {
+        englishWord.textContent = c.en || c.english || c.vi || '';
+        englishEx.textContent   = c.enEx || c.englishEx || c.viEx || '';
+        englishCat.textContent  = englishCategoryMap[c.cat] || '';
+      }
+
+      // German category label (left)
+      germanCat.textContent = categoryMap[c.cat] || c.cat || '';
+
       progress.textContent = `${currentIndex+1}/${filtered.length}`;
       flashcard.classList.remove('flipped');
 
@@ -372,9 +593,24 @@
     }
 
     document.getElementById('flip-btn').addEventListener('click', () => flashcard.classList.toggle('flipped'));
-    document.getElementById('next-btn').addEventListener('click', () => { currentIndex = (currentIndex+1) % getFiltered().length; updateCard(); });
-    document.getElementById('prev-btn').addEventListener('click', () => { const f = getFiltered(); currentIndex = (currentIndex-1 + f.length) % f.length; updateCard(); });
-    document.getElementById('random-btn').addEventListener('click', () => { const f = getFiltered(); currentIndex = Math.floor(Math.random() * f.length); updateCard(); });
+    document.getElementById('next-btn').addEventListener('click', () => {
+      const f = getFiltered();
+      if (!f.length) return;
+      currentIndex = (currentIndex+1) % f.length;
+      updateCard();
+    });
+    document.getElementById('prev-btn').addEventListener('click', () => {
+      const f = getFiltered();
+      if (!f.length) return;
+      currentIndex = (currentIndex-1 + f.length) % f.length;
+      updateCard();
+    });
+    document.getElementById('random-btn').addEventListener('click', () => {
+      const f = getFiltered();
+      if (!f.length) return;
+      currentIndex = Math.floor(Math.random() * f.length);
+      updateCard();
+    });
 
     document.querySelectorAll('.category-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -390,14 +626,19 @@
       const form = document.getElementById('add-word-form');
       const isHidden = form.style.display === 'none' || form.style.display === '';
       form.style.display = isHidden ? 'block' : 'none';
+      form.setAttribute('aria-hidden', String(!isHidden));
+      if (!isHidden) return;
+      form.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 
     document.getElementById('add-word-btn').addEventListener('click', () => {
       const newCard = {
         de: (document.getElementById('new-german').value || '').trim(),
         en: (document.getElementById('new-english').value || '').trim(),
+        vi: (document.getElementById('new-vietnamese') ? document.getElementById('new-vietnamese').value.trim() : ''),
         deEx: (document.getElementById('new-german-example').value || '').trim(),
         enEx: (document.getElementById('new-english-example').value || '').trim(),
+        viEx: (document.getElementById('new-vietnamese-example') ? document.getElementById('new-vietnamese-example').value.trim() : ''),
         cat: document.getElementById('new-category').value
       };
       if (!newCard.de || !newCard.en) {
@@ -405,11 +646,11 @@
         return;
       }
       flashcards.push(newCard);
+      // Persist to localStorage
+      saveFlashcards(flashcards);
       showChatMessage(`"${newCard.de}" HINZUGEFÜGT!`);
-      document.getElementById('new-german').value = '';
-      document.getElementById('new-english').value = '';
-      document.getElementById('new-german-example').value = '';
-      document.getElementById('new-english-example').value = '';
+      const addForm = document.getElementById('add-word-form');
+      if (addForm) addForm.reset();
       // show the new card
       currentCategory = 'all';
       document.querySelectorAll('.category-btn').forEach(b => b.classList.toggle('active', b.dataset.category === 'all'));
@@ -434,7 +675,117 @@
       flashcard.classList.toggle('flipped');
     });
 
+    // Keyboard shortcuts: Left/Right to navigate, Space/Enter to flip, R for random
+    document.addEventListener('keydown', (e) => {
+      const tag = (e.target && e.target.tagName) || '';
+      if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+      if (e.key === 'ArrowRight') { document.getElementById('next-btn').click(); }
+      else if (e.key === 'ArrowLeft') { document.getElementById('prev-btn').click(); }
+      else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); document.getElementById('flip-btn').click(); }
+      else if (e.key.toLowerCase() === 'r') { document.getElementById('random-btn').click(); }
+    });
+
+    // language toggle
+    let currentLang = 'en'; // default English
+    const langToggleBtn = document.getElementById('lang-toggle');
+    // restore saved language preference
+    try {
+      const savedLang = localStorage.getItem('flashLang');
+      if (savedLang === 'en' || savedLang === 'vi') currentLang = savedLang;
+    } catch (_) {}
+    langToggleBtn.textContent = 'LANGUAGE: ' + (currentLang === 'en' ? 'ENGLISH' : 'VIETNAMESE (TIẾNG VIỆT)');
+    langToggleBtn.addEventListener('click', () => {
+      currentLang = currentLang === 'en' ? 'vi' : 'en';
+      langToggleBtn.textContent = 'LANGUAGE: ' + (currentLang === 'en' ? 'ENGLISH' : 'VIETNAMESE (TIẾNG VIỆT)');
+      try { localStorage.setItem('flashLang', currentLang); } catch (_) {}
+      updateCard();
+    });
+
     updateCard();
+
+    // === EXPORT ===
+    document.getElementById("exportBtn").addEventListener("click", () => {
+      const dataStr = JSON.stringify(flashcards, null, 2);
+      const blob = new Blob([dataStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "flashcards.json";
+      a.click();
+
+      URL.revokeObjectURL(url);
+    });
+
+    // === IMPORT ===
+    const importInput = document.getElementById("importFile");
+    document.getElementById("importBtn").addEventListener("click", () => {
+      importInput.click(); // triggers hidden file input
+    });
+
+    importInput.addEventListener("change", function () {
+      const file = this.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const imported = JSON.parse(e.target.result);
+
+          if (Array.isArray(imported)) {
+            flashcards = flashcards.concat(imported); // merge
+            saveFlashcards(flashcards);
+            showChatMessage('✅ Import erfolgreich!');
+            // reflect new data immediately
+            currentCategory = 'all';
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.toggle('active', b.dataset.category === 'all'));
+            currentIndex = flashcards.length - 1;
+            updateCard();
+          } else {
+            showChatMessage('❌ Ungültiges Datei-Format!', true);
+          }
+        } catch (err) {
+          showChatMessage('❌ Fehler beim Lesen der Datei!', true);
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    // Settings toggle
+    const settingsBtn = document.getElementById('settings-btn');
+    const controlsPanel = document.querySelector('.data-controls');
+    settingsBtn.addEventListener('click', () => {
+      controlsPanel.classList.toggle('active');
+    });
+
+    // === DESTROY: thunder, shake, flash, nuke storage ===
+    const destroyBtn = document.getElementById('destroyBtn');
+    const thunderSound = document.getElementById('thunderSound');
+    const thunderFlash = document.getElementById('thunder-flash');
+    document.getElementById('destroyBtn').addEventListener('click', () => {
+      // Pre-confirm dramatic effects
+      try { thunderSound.currentTime = 0; thunderSound.play(); } catch (_) {}
+      thunderFlash.classList.add('active');
+      setTimeout(() => thunderFlash.classList.remove('active'), 500);
+      document.body.classList.add('shake');
+      setTimeout(() => document.body.classList.remove('shake'), 400);
+      showChatMessage('⚡ EVIL DESTRUCTION UNLEASHED ⚡');
+
+      if (confirm('⚡ Are you sure you want to DESTROY all your data? ⚡')) {
+        destroyBtn.classList.remove('pulsing');
+
+        // Bigger flash + shake before nuke
+        document.body.classList.add('shake');
+        thunderFlash.classList.add('active');
+        setTimeout(() => {
+          thunderFlash.classList.remove('active');
+          document.body.classList.remove('shake');
+          try { localStorage.clear(); } catch (_) {}
+          alert('💀 All data has been DESTROYED in a storm of chaos! 💀');
+          location.reload();
+        }, 1500);
+      }
+    });
 
     /*****************************
      * Floating image spawner
