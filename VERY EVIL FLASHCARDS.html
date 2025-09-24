@@ -649,14 +649,8 @@
       // Persist to localStorage
       saveFlashcards(flashcards);
       showChatMessage(`"${newCard.de}" HINZUGEFÜGT!`);
-      document.getElementById('new-german').value = '';
-      document.getElementById('new-english').value = '';
-      const viIn = document.getElementById('new-vietnamese');
-      if (viIn) viIn.value = '';
-      document.getElementById('new-german-example').value = '';
-      document.getElementById('new-english-example').value = '';
-      const viExIn = document.getElementById('new-vietnamese-example');
-      if (viExIn) viExIn.value = '';
+      const addForm = document.getElementById('add-word-form');
+      if (addForm) addForm.reset();
       // show the new card
       currentCategory = 'all';
       document.querySelectorAll('.category-btn').forEach(b => b.classList.toggle('active', b.dataset.category === 'all'));
