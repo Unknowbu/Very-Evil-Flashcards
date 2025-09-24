@@ -51,7 +51,7 @@
     .header h1 {
       font-family: 'UnifrakturMaguntia', cursive;
       color: #ff0000;
-      font-size: 2rem;
+      font-size: 1.8rem;
       text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
       margin-bottom: 6px;
     }
@@ -59,9 +59,9 @@
     .neuro-quote { color:#ff6666; font-style:italic; margin-bottom:10px; }
 
     /* ---------- Category buttons ---------- */
-    .category-filter { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:16px 0; z-index: 11;}
+    .category-filter { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:16px 0; z-index: 11;}
     .category-btn {
-      background:#2a0a0a; color:#ccc; border:1px solid #500; padding:8px 12px; border-radius:6px; cursor:pointer;
+      background:#2a0a0a; color:#ccc; border:1px solid #500; padding:6px 10px; border-radius:6px; cursor:pointer;
       font-family:'Cinzel Decorative',serif; font-weight:700;
     }
     .category-btn.active, .category-btn:hover { background:#8B0000; color:#fff; border-color:#ff0000; transform:translateY(-2px); }
@@ -70,7 +70,7 @@
     .flashcard {
       width:100%;
       max-width:780px;
-      height:320px;
+      height:400px;
       margin: 10px auto;
       background:#110000;
       border-radius:12px;
@@ -100,31 +100,36 @@
 
     .word {
       font-family: 'Orbitron', sans-serif;
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight:700;
       margin-bottom:10px;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.75);
       word-break:break-word;
       overflow-wrap:break-word;
-      max-height: 120px; overflow-y:auto; padding:0 6px;
+      max-height: 160px; overflow-y:auto; padding:0 6px;
     }
 
     .example {
       font-style:italic;
-      font-size:1rem;
+      font-size:.95rem;
       color:#ccc;
       line-height:1.3;
-      max-height:110px; overflow-y:auto;
+      max-height:180px; overflow-y:auto;
       padding:0 10px;
       word-break:break-word; overflow-wrap:break-word;
     }
 
+    /* Subtle scrollbar styling for overflow areas */
+    .word::-webkit-scrollbar, .example::-webkit-scrollbar { width: 8px; }
+    .word::-webkit-scrollbar-thumb, .example::-webkit-scrollbar-thumb { background: rgba(255,0,0,0.25); border-radius: 6px; }
+    .word, .example { scrollbar-width: thin; scrollbar-color: rgba(255,0,0,0.35) transparent; }
+
     .category-tag { margin-top:10px; font-family:'Cinzel Decorative',serif; font-size:.85rem; padding:4px 8px; background:rgba(139,0,0,0.18); border-radius:8px; color:#ffb2b2; }
 
     /* ---------- Controls ---------- */
-    .buttons { display:flex; gap:10px; justify-content:center; margin-top:18px; flex-wrap:wrap; z-index:12; }
+    .buttons { display:flex; gap:8px; justify-content:center; margin-top:18px; flex-wrap:wrap; z-index:12; }
     .buttons button {
-      background:#2a0a0a; color:#ccc; border:1px solid #500; padding:10px 14px; border-radius:8px; cursor:pointer;
+      background:#2a0a0a; color:#ccc; border:1px solid #500; padding:8px 12px; border-radius:8px; cursor:pointer;
       font-family:'Cinzel Decorative',serif;
     }
     .buttons button:hover { background:#8B0000; color:#fff; transform: translateY(-2px); }
@@ -208,6 +213,11 @@
     }
     .data-controls.active { opacity: 1; max-height: none; }
     .data-controls .data-row { display:flex; gap:8px; justify-content:center; align-items:center; }
+    .controls-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(255,0,0,0) 0%, rgba(255,0,0,0.35) 50%, rgba(255,0,0,0) 100%);
+    }
     .data-controls .data-row { display:flex; gap:8px; justify-content:center; align-items:center; }
     .data-controls button {
       padding: 6px 12px;
@@ -333,6 +343,7 @@
         max-height: 240px;
         opacity: 1;
       }
+      .controls-divider { margin: 2px 0; }
 
       /* Flashcard scaling */
       .flashcard {
@@ -369,6 +380,10 @@
         font-size: clamp(12px, 4vw, 14px);
         padding: 8px;
       }
+
+      /* slightly reduce paddings for bottom controls on mobile */
+      .settings-container { bottom: 16px; left: 16px; gap: 6px; }
+      .settings-btn { padding: 8px 12px; }
     }
     .floating-img {
       position: fixed;
@@ -393,13 +408,13 @@
 
     /* small responsive tweaks */
     @media (max-width: 768px) {
-      .flashcard { height: 280px; }
+      .flashcard { height: 320px; }
       .word { font-size:1.6rem; }
       .floating-img img { width: 100px; }
     }
     @media (max-width: 480px) {
       .container { padding:16px; }
-      .flashcard { height: 240px; }
+      .flashcard { height: 280px; }
       .floating-img img { width: 86px; }
     }
   </style>
@@ -414,6 +429,7 @@
     <button id="settings-btn" class="settings-btn">⚙ Settings</button>
     <div class="data-controls" aria-label="data controls">
       <button id="destroyBtn" class="evil-button pulsing">DESTROY</button>
+      <div class="controls-divider"></div>
       <div class="data-row">
         <button id="exportBtn">Export</button>
         <input type="file" id="importFile" accept="application/json" style="display:none;" />
